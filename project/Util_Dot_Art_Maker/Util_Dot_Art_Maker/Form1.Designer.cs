@@ -33,11 +33,15 @@ namespace Util_Dot_Art_Maker
             this.pictureLoaded = new System.Windows.Forms.PictureBox();
             this.transformedTextBox = new System.Windows.Forms.TextBox();
             this.dotForm = new System.Windows.Forms.GroupBox();
-            this.resizeWidthLabel = new System.Windows.Forms.Label();
-            this.resizeHightLabel = new System.Windows.Forms.Label();
-            this.resizeWidthInput = new System.Windows.Forms.TextBox();
-            this.resizeHeightInput = new System.Windows.Forms.TextBox();
+            this.renderLabel = new System.Windows.Forms.Label();
+            this.ThresholdLabel = new System.Windows.Forms.Label();
+            this.processMethodRadio_fs = new System.Windows.Forms.RadioButton();
+            this.processMethodRadio_thresh = new System.Windows.Forms.RadioButton();
             this.thresholdBar = new System.Windows.Forms.TrackBar();
+            this.resizeHeightInput = new System.Windows.Forms.TextBox();
+            this.resizeWidthInput = new System.Windows.Forms.TextBox();
+            this.resizeHightLabel = new System.Windows.Forms.Label();
+            this.resizeWidthLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureLoaded)).BeginInit();
             this.dotForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdBar)).BeginInit();
@@ -45,7 +49,7 @@ namespace Util_Dot_Art_Maker
             // 
             // pictureAddBtn
             // 
-            this.pictureAddBtn.Location = new System.Drawing.Point(700, 12);
+            this.pictureAddBtn.Location = new System.Drawing.Point(848, 12);
             this.pictureAddBtn.Name = "pictureAddBtn";
             this.pictureAddBtn.Size = new System.Drawing.Size(88, 40);
             this.pictureAddBtn.TabIndex = 0;
@@ -64,14 +68,19 @@ namespace Util_Dot_Art_Maker
             // 
             // transformedTextBox
             // 
-            this.transformedTextBox.Location = new System.Drawing.Point(374, 12);
+            this.transformedTextBox.Location = new System.Drawing.Point(372, 12);
             this.transformedTextBox.Multiline = true;
             this.transformedTextBox.Name = "transformedTextBox";
-            this.transformedTextBox.Size = new System.Drawing.Size(320, 320);
+            this.transformedTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.transformedTextBox.Size = new System.Drawing.Size(470, 470);
             this.transformedTextBox.TabIndex = 2;
             // 
             // dotForm
             // 
+            this.dotForm.Controls.Add(this.renderLabel);
+            this.dotForm.Controls.Add(this.ThresholdLabel);
+            this.dotForm.Controls.Add(this.processMethodRadio_fs);
+            this.dotForm.Controls.Add(this.processMethodRadio_thresh);
             this.dotForm.Controls.Add(this.thresholdBar);
             this.dotForm.Controls.Add(this.resizeHeightInput);
             this.dotForm.Controls.Add(this.resizeWidthInput);
@@ -84,14 +93,73 @@ namespace Util_Dot_Art_Maker
             this.dotForm.TabStop = false;
             this.dotForm.Text = "Dot Tranform Control";
             // 
-            // resizeWidthLabel
+            // renderLabel
             // 
-            this.resizeWidthLabel.AutoSize = true;
-            this.resizeWidthLabel.Location = new System.Drawing.Point(6, 18);
-            this.resizeWidthLabel.Name = "resizeWidthLabel";
-            this.resizeWidthLabel.Size = new System.Drawing.Size(73, 12);
-            this.resizeWidthLabel.TabIndex = 0;
-            this.resizeWidthLabel.Text = "Resize Width: ";
+            this.renderLabel.AutoSize = true;
+            this.renderLabel.Location = new System.Drawing.Point(6, 145);
+            this.renderLabel.Name = "renderLabel";
+            this.renderLabel.Size = new System.Drawing.Size(42, 12);
+            this.renderLabel.TabIndex = 8;
+            this.renderLabel.Text = "Render:";
+            // 
+            // ThresholdLabel
+            // 
+            this.ThresholdLabel.AutoSize = true;
+            this.ThresholdLabel.Location = new System.Drawing.Point(6, 94);
+            this.ThresholdLabel.Name = "ThresholdLabel";
+            this.ThresholdLabel.Size = new System.Drawing.Size(79, 12);
+            this.ThresholdLabel.TabIndex = 7;
+            this.ThresholdLabel.Text = "Threshold: 50%";
+            // 
+            // processMethodRadio_fs
+            // 
+            this.processMethodRadio_fs.AutoSize = true;
+            this.processMethodRadio_fs.Location = new System.Drawing.Point(232, 143);
+            this.processMethodRadio_fs.Name = "processMethodRadio_fs";
+            this.processMethodRadio_fs.Size = new System.Drawing.Size(67, 16);
+            this.processMethodRadio_fs.TabIndex = 6;
+            this.processMethodRadio_fs.Text = "Dither FS";
+            this.processMethodRadio_fs.UseVisualStyleBackColor = true;
+            // 
+            // processMethodRadio_thresh
+            // 
+            this.processMethodRadio_thresh.AutoSize = true;
+            this.processMethodRadio_thresh.Checked = true;
+            this.processMethodRadio_thresh.Location = new System.Drawing.Point(97, 143);
+            this.processMethodRadio_thresh.Name = "processMethodRadio_thresh";
+            this.processMethodRadio_thresh.Size = new System.Drawing.Size(87, 16);
+            this.processMethodRadio_thresh.TabIndex = 5;
+            this.processMethodRadio_thresh.TabStop = true;
+            this.processMethodRadio_thresh.Text = "Dither Thresh";
+            this.processMethodRadio_thresh.UseVisualStyleBackColor = true;
+            // 
+            // thresholdBar
+            // 
+            this.thresholdBar.LargeChange = 20;
+            this.thresholdBar.Location = new System.Drawing.Point(97, 81);
+            this.thresholdBar.Maximum = 255;
+            this.thresholdBar.Name = "thresholdBar";
+            this.thresholdBar.Size = new System.Drawing.Size(202, 45);
+            this.thresholdBar.TabIndex = 4;
+            this.thresholdBar.Value = 128;
+            this.thresholdBar.Scroll += new System.EventHandler(this.thresholdBar_Scroll);
+            this.thresholdBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.thresholdBar_MouseUp);
+            // 
+            // resizeHeightInput
+            // 
+            this.resizeHeightInput.Location = new System.Drawing.Point(84, 43);
+            this.resizeHeightInput.Name = "resizeHeightInput";
+            this.resizeHeightInput.Size = new System.Drawing.Size(100, 22);
+            this.resizeHeightInput.TabIndex = 3;
+            this.resizeHeightInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resizeHeightInput_KeyPress);
+            // 
+            // resizeWidthInput
+            // 
+            this.resizeWidthInput.Location = new System.Drawing.Point(85, 15);
+            this.resizeWidthInput.Name = "resizeWidthInput";
+            this.resizeWidthInput.Size = new System.Drawing.Size(100, 22);
+            this.resizeWidthInput.TabIndex = 2;
+            this.resizeWidthInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resizeWidthInput_KeyPress);
             // 
             // resizeHightLabel
             // 
@@ -102,27 +170,14 @@ namespace Util_Dot_Art_Maker
             this.resizeHightLabel.TabIndex = 1;
             this.resizeHightLabel.Text = "Resize Height:";
             // 
-            // resizeWidthInput
+            // resizeWidthLabel
             // 
-            this.resizeWidthInput.Location = new System.Drawing.Point(85, 15);
-            this.resizeWidthInput.Name = "resizeWidthInput";
-            this.resizeWidthInput.Size = new System.Drawing.Size(100, 22);
-            this.resizeWidthInput.TabIndex = 2;
-            // 
-            // resizeHeightInput
-            // 
-            this.resizeHeightInput.Location = new System.Drawing.Point(84, 43);
-            this.resizeHeightInput.Name = "resizeHeightInput";
-            this.resizeHeightInput.Size = new System.Drawing.Size(100, 22);
-            this.resizeHeightInput.TabIndex = 3;
-            // 
-            // thresholdBar
-            // 
-            this.thresholdBar.LargeChange = 20;
-            this.thresholdBar.Location = new System.Drawing.Point(80, 93);
-            this.thresholdBar.Name = "thresholdBar";
-            this.thresholdBar.Size = new System.Drawing.Size(104, 45);
-            this.thresholdBar.TabIndex = 4;
+            this.resizeWidthLabel.AutoSize = true;
+            this.resizeWidthLabel.Location = new System.Drawing.Point(6, 18);
+            this.resizeWidthLabel.Name = "resizeWidthLabel";
+            this.resizeWidthLabel.Size = new System.Drawing.Size(73, 12);
+            this.resizeWidthLabel.TabIndex = 0;
+            this.resizeWidthLabel.Text = "Resize Width: ";
             // 
             // MainWindow
             // 
@@ -158,6 +213,10 @@ namespace Util_Dot_Art_Maker
         private System.Windows.Forms.TextBox resizeWidthInput;
         private System.Windows.Forms.Label resizeHightLabel;
         private System.Windows.Forms.Label resizeWidthLabel;
+        private System.Windows.Forms.RadioButton processMethodRadio_fs;
+        private System.Windows.Forms.RadioButton processMethodRadio_thresh;
+        private System.Windows.Forms.Label renderLabel;
+        private System.Windows.Forms.Label ThresholdLabel;
     }
 }
 

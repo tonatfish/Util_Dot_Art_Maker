@@ -17,8 +17,16 @@ namespace Util_Dot_Art_Maker
             InitializeComponent();
         }
 
+
+
+        // Variable
+
         string[] pictureImgTypes = new string[] { ".jpg", ".png", ".gif" };
         double threshold = 0.5;
+
+
+
+        // Form
 
         private void pictureAddBtn_Click(object sender, EventArgs e)
         {
@@ -92,12 +100,63 @@ namespace Util_Dot_Art_Maker
             }
         }
 
+        private void thresholdBar_Scroll(object sender, EventArgs e)
+        {
+            ThresholdLabel.Text = "Threshold: " + ((int)((double)thresholdBar.Value / 255 * 100)).ToString() + "%";
+        }
+
+        private void thresholdBar_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void resizeWidthInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == 8))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void resizeHeightInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == 8))
+            {
+                e.Handled = true;
+            }
+        }
+
+
+
+        // Logic
+
         private void imgProcessToDot(int imgType)
         {
             int pictureWidth = pictureLoaded.Image.Width;
             int pictureHeight = pictureLoaded.Image.Height;
-            Bitmap pictureChange = (Bitmap)pictureLoaded.Image;
+            if (resizeHeightInput.Text != "")
+            {
+                int resizeHeight = Convert.ToInt32(resizeHeightInput.Text);
+                if (resizeHeight < pictureHeight)
+                {
+                    pictureWidth = (int)((double)pictureWidth / pictureHeight * resizeHeight);
+                    pictureHeight = resizeHeight;
+                }
+            }
+            if (resizeWidthInput.Text != "")
+            {
+                int resizeWidth = Convert.ToInt32(resizeWidthInput.Text);
+                if (resizeWidth < pictureWidth)
+                {
+                    pictureHeight = (int)((double)pictureHeight / pictureWidth * resizeWidth);
+                    pictureWidth = resizeWidth;
+                }
+            }
+
+            Bitmap pictureChange = new Bitmap(pictureLoaded.Image, new Size(pictureWidth, pictureHeight));
             double[,] processData = new double[pictureWidth, pictureHeight];
+
+            threshold = thresholdBar.Value / 255.0;
 
             // turn picture into gray
             for (int i = 0; i < pictureWidth; i++)
@@ -111,6 +170,100 @@ namespace Util_Dot_Art_Maker
                     pictureChange.SetPixel(i, j, pixelColor);
                 }
             }
+
+            if (processMethodRadio_thresh.Checked)
+            {
+                processData = ditherThresh(processData);
+            }
+            else if (processMethodRadio_fs.Checked)
+            {
+                processData = ditherFS(processData);
+            }
+
+            setPictureLoaded(processData, pictureChange);
+            setDotArt(processData);
+        }
+
+        private void setPictureLoaded(double[,] pixelData, Bitmap resizedPicture)
+        {
+            for (int i = 0; i < pixelData.GetLength(0); i++)
+            {
+                for (int j = 0; j < pixelData.GetLength(1); j++)
+                {
+                    int newGray = (int)(pixelData[i, j] * 255);
+                    Color pixelColor = Color.FromArgb(newGray, newGray, newGray);
+                    resizedPicture.SetPixel(i, j, pixelColor);
+                }
+            }
+
+            pictureLoaded.Image = resizedPicture;
+        }
+
+        private void setDotArt(double[,] pixelData) // in pixelDate, first Rk: width & second Rk: height
+        {
+            int pictureWidth = pixelData.GetLength(0);
+            int pictureHeight = pixelData.GetLength(1);
+            int[,] pictureUnicode = new int[(int)Math.Ceiling((double)pictureHeight / 4), (int)Math.Ceiling((double)pictureWidth / 2)];
+            int uniStarter = 10240;
+            
+            for (int i = 0; i < pictureHeight; i++)
+            {
+                for (int j = 0; j < pictureWidth; j ++)
+                {
+                    if (i % 4 == 0 && j % 2 == 0)
+                    {
+                        pictureUnicode[i / 4, j / 2] = 1 - (int)pixelData[j, i];
+                    }
+                    else if (pixelData[j, i] == 0)
+                    {
+                        pictureUnicode[i / 4, j / 2] += Convert.ToInt32(Math.Pow(2, i % 4 * 2 + j % 2));
+                    }
+                }
+            }
+
+            int uniHeight = pictureUnicode.GetLength(0);
+            int uniWidth = pictureUnicode.GetLength(1);
+            string transformedText = "";
+
+            byte[] BlankBytes = new byte[2];
+            string BlankStr = Convert.ToString(uniStarter, 16);
+            BlankBytes[1] = Convert.ToByte(BlankStr.Substring(0, 2), 16);
+            BlankBytes[0] = Convert.ToByte(BlankStr.Substring(2, 2), 16);
+            BlankStr = Encoding.Unicode.GetString(BlankBytes);
+
+            for (int i = 0; i < uniHeight; i++)
+            {
+                int blankCount = 0;
+                for (int j = 0; j < uniWidth; j++)
+                {
+                    if (pictureUnicode[i, j] == 0)
+                    {
+                        blankCount++;
+                    }
+                    else
+                    {
+                        for (int k = 0; k < blankCount; k++)
+                        {
+                            transformedText += BlankStr;
+                        }
+                        blankCount = 0;
+                        byte[] uniBytes = new byte[2];
+                        string convertStr = Convert.ToString(pictureUnicode[i, j] + uniStarter, 16);
+                        uniBytes[1] = Convert.ToByte(convertStr.Substring(0, 2), 16);
+                        uniBytes[0] = Convert.ToByte(convertStr.Substring(2, 2), 16);
+                        transformedText += Encoding.Unicode.GetString(uniBytes);
+                    }
+                }
+                transformedText += "\r\n";
+            }
+
+            transformedTextBox.Text = transformedText;
+        }
+
+        private double[,] ditherFS(double[,] processData)
+        {
+            int pictureHeight = processData.GetLength(1);
+            int pictureWidth = processData.GetLength(0);
 
             // process Floyd-Steinberg dithering
             for (int i = 0; i < pictureHeight; i++)
@@ -156,63 +309,24 @@ namespace Util_Dot_Art_Maker
                 }
             }
 
-            setPictureLoaded(processData);
-            setDotArt(processData);
+            return processData;
         }
 
-        private void setPictureLoaded(double[,] pixelData)
+        private double[,] ditherThresh(double[,] processData)
         {
-            Bitmap pictureChange = (Bitmap)pictureLoaded.Image;
+            int pictureHeight = processData.GetLength(1);
+            int pictureWidth = processData.GetLength(0);
 
-            for (int i = 0; i < pixelData.GetLength(0); i++)
+            // process Thresh dithering
+            for (int i = 0; i < pictureHeight; i++)
             {
-                for (int j = 0; j < pixelData.GetLength(1); j++)
+                for (int j = 0; j < pictureWidth; j++)
                 {
-                    int newGray = (int)(pixelData[i, j] * 255);
-                    Color pixelColor = Color.FromArgb(newGray, newGray, newGray);
-                    pictureChange.SetPixel(i, j, pixelColor);
+                    processData[j, i] = (processData[j, i] >= threshold) ? 1 : 0;
                 }
             }
 
-            pictureLoaded.Image = pictureChange;
-        }
-
-        private void setDotArt(double[,] pixelData) // first Rk: width, second Rk: height
-        {
-            transformedTextBox.Text = "";
-            for (int i = 0; i < pixelData.GetLength(1); i += 4)
-            {
-                int blankCount = 0;
-                for (int j = 0; j < pixelData.GetLength(0); j += 2)
-                {
-                    int pixelUnicode = 10240;
-                    for (int k = 0; k < 8; k++)
-                    {
-                        if (i + k / 2 < pixelData.GetLength(1) && j + k % 2 < pixelData.GetLength(0) && pixelData[j + k % 2, i + k / 2] == 0)
-                        {
-                            pixelUnicode += Convert.ToInt32(Math.Pow(2, k));
-                        }
-                    }
-                    if (pixelUnicode == 10240)
-                    {
-                        blankCount++;
-                    }
-                    else
-                    {
-                        for (int k = 0; k < blankCount; k++)
-                        {
-                            transformedTextBox.Text += "⠀";
-                        }
-                        blankCount = 0;
-                        /*byte[] uniBytes = new byte[2];
-                        string convertStr = Convert.ToString(pixelUnicode, 16);
-                        uniBytes[1] = Convert.ToByte(convertStr.Substring(0, 2), 16);
-                        uniBytes[0] = Convert.ToByte(convertStr.Substring(2, 2), 16);
-                        transformedTextBox.Text += Encoding.Unicode.GetString(uniBytes);*/
-                    }
-                }
-                transformedTextBox.Text += "\n";
-            }
+            return processData;
         }
     }
 }
