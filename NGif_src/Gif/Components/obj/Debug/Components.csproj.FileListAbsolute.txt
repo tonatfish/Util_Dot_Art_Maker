@@ -4,3 +4,9 @@ C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Components\obj\Debug\Compon
 C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Components\obj\Debug\Components.csproj.CoreCompileInputs.cache
 C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Components\obj\Debug\Gif.Components.dll
 C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Components\obj\Debug\Gif.Components.pdb
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\bin\Debug\Gif.Components.dll
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\bin\Debug\Gif.Components.pdb
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Debug\Components.csprojAssemblyReference.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Debug\Components.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Debug\Gif.Components.dll
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Debug\Gif.Components.pdb

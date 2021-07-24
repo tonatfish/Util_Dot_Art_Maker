@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -28,7 +29,13 @@ namespace Util_Dot_Art_Maker
         // Variable
 
         string[] pictureImgTypes = new string[] { ".jpg", ".png", ".gif" };
+        int imgType = 0;
         double threshold = 0.5;
+
+        List<Image> performedImgs = new List<Image>();
+        List<string> performedTexts = new List<String>();
+        int performedCount = 0;
+        int performedId = 0;
 
 
 
@@ -36,7 +43,6 @@ namespace Util_Dot_Art_Maker
 
         private void pictureAddBtn_Click(object sender, EventArgs e)
         {
-            int imgType = 0;
             OpenFileDialog pictureLoadDialog = new OpenFileDialog();
             string imgFilterText = "any of pictures|*.*";
             for (int i = 0; i < pictureImgTypes.Length; i++)
@@ -57,8 +63,18 @@ namespace Util_Dot_Art_Maker
                 }
                 if (isPicture)
                 {
+                    gifTimer.Stop();
+                    performedTexts.Clear();
+                    performedImgs.Clear();
                     pictureLoaded.Load(pictureLoadDialog.FileName);
-                    imgProcessToDot(imgType);
+                    if (imgType == 2)
+                    {
+                        setGifOnScreen(pictureLoadDialog.FileName);
+                    }
+                    else
+                    {
+                        setImgOnScreen();
+                    }
                 }
                 else
                 {
@@ -82,7 +98,6 @@ namespace Util_Dot_Art_Maker
 
         private void MainWindow_DragEnter(object sender, DragEventArgs e)
         {
-            int imgType = 0;
             string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
             string file = files[0];
             bool isPicture = false;
@@ -96,8 +111,18 @@ namespace Util_Dot_Art_Maker
             }
             if (isPicture)
             {
+                gifTimer.Stop();
+                performedTexts.Clear();
+                performedImgs.Clear();
                 pictureLoaded.Load(file);
-                imgProcessToDot(imgType);
+                if (imgType == 2)
+                {
+                    setGifOnScreen(file);
+                }
+                else
+                {
+                    setImgOnScreen();
+                }
             }
             else
             {
@@ -134,33 +159,142 @@ namespace Util_Dot_Art_Maker
 
         private void imageSaveBtn_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog pictureSaveDialog = new SaveFileDialog();
+            string imgFilterText = "any of pictures|*.*";
+            for (int i = 0; i < pictureImgTypes.Length; i++)
+            {
+                imgFilterText += "|" + pictureImgTypes[i] + " files(*" + pictureImgTypes[i] + ")|*" + pictureImgTypes[i];
+            }
+            pictureSaveDialog.Filter = imgFilterText;
+            pictureSaveDialog.FileName = "art_image";
+            pictureSaveDialog.DefaultExt = pictureImgTypes[imgType];
+            pictureSaveDialog.AddExtension = true;
+            if (pictureSaveDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (performedCount == 0)
+                {
+                    MessageBox.Show("還沒載入圖片!");
+                    return;
+                }
+                if (imgType == 2)
+                {
+                    AnimatedGifEncoder animate = new AnimatedGifEncoder();
+                    animate.Start(pictureSaveDialog.FileName);
+                    animate.SetDelay(gifTimer.Interval);
+                    animate.SetRepeat(0);
+                    foreach (Image item in performedImgs)
+                    {
+                        animate.AddFrame(item);
+                    }
+                    animate.Finish();
+                }
+                else
+                {
+                    pictureLoaded.Image.Save(pictureSaveDialog.FileName);
+                }
+            }
         }
 
         private void txtSaveBtn_Click(object sender, EventArgs e)
         {
+            if (imgType == 2)
+            {
+                SaveFileDialog dotGifSaveDialog = new SaveFileDialog();
+                dotGifSaveDialog.Filter = "gif|*.gif";
+                dotGifSaveDialog.FileName = "dot_art";
+                dotGifSaveDialog.DefaultExt = pictureImgTypes[imgType];
+                dotGifSaveDialog.AddExtension = true;
+                if (dotGifSaveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (performedCount == 0)
+                    {
+                        MessageBox.Show("還沒載入圖片!");
+                        return;
+                    }
+                    List<Image> tempImgs = new List<Image>();
+                    for (int i = 0; i < performedCount; i++)
+                    {
+                        Bitmap bitmap = new Bitmap(pictureLoaded.Width, pictureLoaded.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                        Graphics graphics = Graphics.FromImage(bitmap);
+                        graphics.Clear(Color.White);
+                        graphics.DrawString(performedTexts[i], new Font("新細明體", 6, FontStyle.Regular), new SolidBrush(Color.FromArgb(0, 0, 0)), new PointF(0F, 0F));
+                        tempImgs.Add(bitmap);
+                    }
 
+                    AnimatedGifEncoder animate = new AnimatedGifEncoder();
+                    animate.Start(dotGifSaveDialog.FileName);
+                    animate.SetDelay(gifTimer.Interval);
+                    animate.SetRepeat(0);
+                    foreach (Image item in tempImgs)
+                    {
+                        animate.AddFrame(item);
+                    }
+                    animate.Finish();
+                }
+            }
+            else
+            {
+                SaveFileDialog dotTxtSaveDialog = new SaveFileDialog();
+                dotTxtSaveDialog.Filter = "txt files|*.txt|all kinds of file|*.*";
+                dotTxtSaveDialog.FileName = "dot_art";
+                dotTxtSaveDialog.DefaultExt = "txt";
+                dotTxtSaveDialog.AddExtension = true;
+                if (dotTxtSaveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (performedCount == 0)
+                    {
+                        MessageBox.Show("還沒載入圖片!");
+                        return;
+                    }
+                    using (StreamWriter sw = new StreamWriter(dotTxtSaveDialog.FileName))
+                    {
+                        sw.WriteLine(performedTexts[0]);
+                    }
+                }
+            }
+        }
+
+        private void gifTimer_Tick(object sender, EventArgs e)
+        {
+            if (++performedId >= performedCount)
+            {
+                performedId = 0;
+            }
+            pictureLoaded.Image = performedImgs[performedId];
+            transformedTextBox.Text = performedTexts[performedId];
         }
 
 
 
         // Logic
 
-        private void imgProcessToDot(int imgType)
+        private void setImgOnScreen()
         {
-            Image IMG = pictureLoaded.Image;
-            List<Image> IMGs = new List<Image>();
-            int Length = IMG.GetFrameCount(FrameDimension.Time);
+            performedCount = 1;
+            imgProcessToDot(pictureLoaded.Image);
+            pictureLoaded.Image = performedImgs[0];
+            transformedTextBox.Text = performedTexts[0];
+        }
 
-            for (int i = 0; i < Length; i++)
+        private void setGifOnScreen(string imgPath)
+        {
+            performedId = 0;
+
+            GifDecoder decoder = new GifDecoder();
+            decoder.Read(imgPath);
+            performedCount = decoder.GetFrameCount();
+            gifTimer.Interval = decoder.GetDelay(0);
+            for (int i = 0; i < performedCount; i++)
             {
-                IMG.SelectActiveFrame(FrameDimension.Time, i);
-                IMGs.Add(new Bitmap(IMG));
+                imgProcessToDot(decoder.GetFrame(i));
             }
+            gifTimer.Start();
+        }
 
-
-            int pictureWidth = pictureLoaded.Image.Width;
-            int pictureHeight = pictureLoaded.Image.Height;
+        private void imgProcessToDot(Image pictureToProcess)
+        {
+            int pictureWidth = pictureToProcess.Width;
+            int pictureHeight = pictureToProcess.Height;
             if (resizeHeightInput.Text != "")
             {
                 int resizeHeight = Convert.ToInt32(resizeHeightInput.Text);
@@ -180,7 +314,7 @@ namespace Util_Dot_Art_Maker
                 }
             }
 
-            Bitmap pictureChange = new Bitmap(pictureLoaded.Image, new Size(pictureWidth, pictureHeight));
+            Bitmap pictureChange = new Bitmap(pictureToProcess, new Size(pictureWidth, pictureHeight));
             double[,] processData = new double[pictureWidth, pictureHeight];
 
             threshold = thresholdBar.Value / 255.0;
@@ -207,12 +341,13 @@ namespace Util_Dot_Art_Maker
                 processData = ditherFS(processData);
             }
 
-            setPictureLoaded(processData, pictureChange);
+            setPictureLoaded(processData);
             setDotArt(processData);
         }
 
-        private void setPictureLoaded(double[,] pixelData, Bitmap resizedPicture)
+        private void setPictureLoaded(double[,] pixelData)
         {
+            Bitmap resizedPicture = new Bitmap(pixelData.GetLength(0), pixelData.GetLength(1));
             for (int i = 0; i < pixelData.GetLength(0); i++)
             {
                 for (int j = 0; j < pixelData.GetLength(1); j++)
@@ -222,8 +357,7 @@ namespace Util_Dot_Art_Maker
                     resizedPicture.SetPixel(i, j, pixelColor);
                 }
             }
-
-            pictureLoaded.Image = resizedPicture;
+            performedImgs.Add(resizedPicture);
         }
 
         private void setDotArt(double[,] pixelData) // in pixelDate, first Rk: width & second Rk: height
@@ -283,8 +417,7 @@ namespace Util_Dot_Art_Maker
                 }
                 transformedText += "\r\n";
             }
-
-            transformedTextBox.Text = transformedText;
+            performedTexts.Add(transformedText);
         }
 
         private double[,] ditherFS(double[,] processData)

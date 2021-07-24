@@ -29,6 +29,7 @@ namespace Util_Dot_Art_Maker
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureAddBtn = new System.Windows.Forms.Button();
             this.pictureLoaded = new System.Windows.Forms.PictureBox();
             this.transformedTextBox = new System.Windows.Forms.TextBox();
@@ -44,6 +45,7 @@ namespace Util_Dot_Art_Maker
             this.resizeWidthLabel = new System.Windows.Forms.Label();
             this.imageSaveBtn = new System.Windows.Forms.Button();
             this.txtSaveBtn = new System.Windows.Forms.Button();
+            this.gifTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureLoaded)).BeginInit();
             this.dotForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdBar)).BeginInit();
@@ -70,6 +72,7 @@ namespace Util_Dot_Art_Maker
             // 
             // transformedTextBox
             // 
+            this.transformedTextBox.Font = new System.Drawing.Font("新細明體", 6F);
             this.transformedTextBox.Location = new System.Drawing.Point(372, 12);
             this.transformedTextBox.Multiline = true;
             this.transformedTextBox.Name = "transformedTextBox";
@@ -201,6 +204,10 @@ namespace Util_Dot_Art_Maker
             this.txtSaveBtn.UseVisualStyleBackColor = true;
             this.txtSaveBtn.Click += new System.EventHandler(this.txtSaveBtn_Click);
             // 
+            // gifTimer
+            // 
+            this.gifTimer.Tick += new System.EventHandler(this.gifTimer_Tick);
+            // 
             // MainWindow
             // 
             this.AllowDrop = true;
@@ -243,6 +250,7 @@ namespace Util_Dot_Art_Maker
         private System.Windows.Forms.Label ThresholdLabel;
         private System.Windows.Forms.Button imageSaveBtn;
         private System.Windows.Forms.Button txtSaveBtn;
+        private System.Windows.Forms.Timer gifTimer;
     }
 }
 

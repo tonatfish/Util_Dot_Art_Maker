@@ -8,3 +8,6 @@ C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_
 C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.csproj.CoreCompileInputs.cache
 C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.exe
 C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.pdb
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\bin\Debug\Gif.Components.dll
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\bin\Debug\Gif.Components.pdb
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.csproj.CopyComplete
