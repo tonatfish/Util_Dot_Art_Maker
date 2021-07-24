@@ -1,0 +1,10 @@
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\bin\Debug\Util_Dot_Art_Maker.exe.config
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\bin\Debug\Util_Dot_Art_Maker.exe
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\bin\Debug\Util_Dot_Art_Maker.pdb
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.csprojAssemblyReference.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.MainWindow.resources
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.Properties.Resources.resources
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.csproj.GenerateResource.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.exe
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\project\Util_Dot_Art_Maker\Util_Dot_Art_Maker\obj\Debug\Util_Dot_Art_Maker.pdb
