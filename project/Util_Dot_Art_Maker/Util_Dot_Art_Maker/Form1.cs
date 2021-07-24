@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Gif.Components;
 
+
+// for someone refact the project: if possible, we can simply classify logic part to another cs
+// I'm no going to do so to improve the code at thist time. _2021/07/24
+// First Made By: David Shih (Tuna)
 namespace Util_Dot_Art_Maker
 {
     public partial class MainWindow : Form
@@ -126,12 +132,33 @@ namespace Util_Dot_Art_Maker
             }
         }
 
+        private void imageSaveBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtSaveBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
 
         // Logic
 
         private void imgProcessToDot(int imgType)
         {
+            Image IMG = pictureLoaded.Image;
+            List<Image> IMGs = new List<Image>();
+            int Length = IMG.GetFrameCount(FrameDimension.Time);
+
+            for (int i = 0; i < Length; i++)
+            {
+                IMG.SelectActiveFrame(FrameDimension.Time, i);
+                IMGs.Add(new Bitmap(IMG));
+            }
+
+
             int pictureWidth = pictureLoaded.Image.Width;
             int pictureHeight = pictureLoaded.Image.Height;
             if (resizeHeightInput.Text != "")

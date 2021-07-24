@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util_Dot_Art_Maker", "Util_Dot_Art_Maker\Util_Dot_Art_Maker.csproj", "{4FEAFF5A-8817-467A-B101-9F16F348193E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components", "..\..\NGif_src\Gif\Components\Components.csproj", "{1C3A03CA-5E55-4CC4-9746-194A4188960A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4FEAFF5A-8817-467A-B101-9F16F348193E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FEAFF5A-8817-467A-B101-9F16F348193E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FEAFF5A-8817-467A-B101-9F16F348193E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C3A03CA-5E55-4CC4-9746-194A4188960A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
