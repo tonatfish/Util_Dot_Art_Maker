@@ -29,6 +29,7 @@ namespace Util_Dot_Art_Maker
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureAddBtn = new System.Windows.Forms.Button();
             this.pictureLoaded = new System.Windows.Forms.PictureBox();
             this.transformedTextBox = new System.Windows.Forms.TextBox();
@@ -42,6 +43,9 @@ namespace Util_Dot_Art_Maker
             this.resizeWidthInput = new System.Windows.Forms.TextBox();
             this.resizeHightLabel = new System.Windows.Forms.Label();
             this.resizeWidthLabel = new System.Windows.Forms.Label();
+            this.imageSaveBtn = new System.Windows.Forms.Button();
+            this.txtSaveBtn = new System.Windows.Forms.Button();
+            this.gifTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureLoaded)).BeginInit();
             this.dotForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdBar)).BeginInit();
@@ -68,6 +72,7 @@ namespace Util_Dot_Art_Maker
             // 
             // transformedTextBox
             // 
+            this.transformedTextBox.Font = new System.Drawing.Font("新細明體", 6F);
             this.transformedTextBox.Location = new System.Drawing.Point(372, 12);
             this.transformedTextBox.Multiline = true;
             this.transformedTextBox.Name = "transformedTextBox";
@@ -179,12 +184,38 @@ namespace Util_Dot_Art_Maker
             this.resizeWidthLabel.TabIndex = 0;
             this.resizeWidthLabel.Text = "Resize Width: ";
             // 
+            // imageSaveBtn
+            // 
+            this.imageSaveBtn.Location = new System.Drawing.Point(848, 58);
+            this.imageSaveBtn.Name = "imageSaveBtn";
+            this.imageSaveBtn.Size = new System.Drawing.Size(88, 40);
+            this.imageSaveBtn.TabIndex = 4;
+            this.imageSaveBtn.Text = "Save Image";
+            this.imageSaveBtn.UseVisualStyleBackColor = true;
+            this.imageSaveBtn.Click += new System.EventHandler(this.imageSaveBtn_Click);
+            // 
+            // txtSaveBtn
+            // 
+            this.txtSaveBtn.Location = new System.Drawing.Point(848, 104);
+            this.txtSaveBtn.Name = "txtSaveBtn";
+            this.txtSaveBtn.Size = new System.Drawing.Size(88, 40);
+            this.txtSaveBtn.TabIndex = 5;
+            this.txtSaveBtn.Text = "Save Dots Text";
+            this.txtSaveBtn.UseVisualStyleBackColor = true;
+            this.txtSaveBtn.Click += new System.EventHandler(this.txtSaveBtn_Click);
+            // 
+            // gifTimer
+            // 
+            this.gifTimer.Tick += new System.EventHandler(this.gifTimer_Tick);
+            // 
             // MainWindow
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 559);
+            this.Controls.Add(this.txtSaveBtn);
+            this.Controls.Add(this.imageSaveBtn);
             this.Controls.Add(this.dotForm);
             this.Controls.Add(this.transformedTextBox);
             this.Controls.Add(this.pictureLoaded);
@@ -217,6 +248,9 @@ namespace Util_Dot_Art_Maker
         private System.Windows.Forms.RadioButton processMethodRadio_thresh;
         private System.Windows.Forms.Label renderLabel;
         private System.Windows.Forms.Label ThresholdLabel;
+        private System.Windows.Forms.Button imageSaveBtn;
+        private System.Windows.Forms.Button txtSaveBtn;
+        private System.Windows.Forms.Timer gifTimer;
     }
 }
 

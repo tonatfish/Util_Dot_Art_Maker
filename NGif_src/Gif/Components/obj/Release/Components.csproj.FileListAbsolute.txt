@@ -1,0 +1,4 @@
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\bin\Release\Gif.Components.dll
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Release\Components.csprojAssemblyReference.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Release\Components.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Desktop\project\util_dot_art_maker\NGif_src\Gif\Components\obj\Release\Gif.Components.dll

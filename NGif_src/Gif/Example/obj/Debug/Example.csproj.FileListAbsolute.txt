@@ -1,0 +1,9 @@
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\bin\Debug\Example.exe
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\bin\Debug\Example.pdb
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\bin\Debug\Gif.Components.dll
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\bin\Debug\Gif.Components.pdb
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\obj\Debug\Example.csprojAssemblyReference.cache
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\obj\Debug\Example.csproj.CoreCompileInputs.cache
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\obj\Debug\Example.csproj.CopyComplete
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\obj\Debug\Example.exe
+C:\Users\david\OneDrive\Desktop\project\NGif_src\Gif\Example\obj\Debug\Example.pdb

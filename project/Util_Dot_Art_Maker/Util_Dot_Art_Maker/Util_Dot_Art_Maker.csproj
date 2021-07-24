@@ -79,5 +79,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NGif_src\Gif\Components\Components.csproj">
+      <Project>{1c3a03ca-5e55-4cc4-9746-194a4188960a}</Project>
+      <Name>Components</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
