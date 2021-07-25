@@ -46,9 +46,22 @@ namespace Util_Dot_Art_Maker
             this.imageSaveBtn = new System.Windows.Forms.Button();
             this.txtSaveBtn = new System.Windows.Forms.Button();
             this.gifTimer = new System.Windows.Forms.Timer(this.components);
+            this.videoForm = new System.Windows.Forms.GroupBox();
+            this.fpsText = new System.Windows.Forms.TextBox();
+            this.fpsLabel = new System.Windows.Forms.Label();
+            this.endSecText = new System.Windows.Forms.TextBox();
+            this.middleLabel2 = new System.Windows.Forms.Label();
+            this.endMinText = new System.Windows.Forms.TextBox();
+            this.videoEndLabel = new System.Windows.Forms.Label();
+            this.startSecText = new System.Windows.Forms.TextBox();
+            this.middleLabel = new System.Windows.Forms.Label();
+            this.startMinText = new System.Windows.Forms.TextBox();
+            this.VideoStartLabel = new System.Windows.Forms.Label();
+            this.videoLoadBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureLoaded)).BeginInit();
             this.dotForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdBar)).BeginInit();
+            this.videoForm.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureAddBtn
@@ -156,7 +169,7 @@ namespace Util_Dot_Art_Maker
             this.resizeHeightInput.Name = "resizeHeightInput";
             this.resizeHeightInput.Size = new System.Drawing.Size(100, 22);
             this.resizeHeightInput.TabIndex = 3;
-            this.resizeHeightInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resizeHeightInput_KeyPress);
+            this.resizeHeightInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
             // 
             // resizeWidthInput
             // 
@@ -164,7 +177,7 @@ namespace Util_Dot_Art_Maker
             this.resizeWidthInput.Name = "resizeWidthInput";
             this.resizeWidthInput.Size = new System.Drawing.Size(100, 22);
             this.resizeWidthInput.TabIndex = 2;
-            this.resizeWidthInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resizeWidthInput_KeyPress);
+            this.resizeWidthInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
             // 
             // resizeHightLabel
             // 
@@ -208,12 +221,133 @@ namespace Util_Dot_Art_Maker
             // 
             this.gifTimer.Tick += new System.EventHandler(this.gifTimer_Tick);
             // 
+            // videoForm
+            // 
+            this.videoForm.Controls.Add(this.fpsText);
+            this.videoForm.Controls.Add(this.fpsLabel);
+            this.videoForm.Controls.Add(this.endSecText);
+            this.videoForm.Controls.Add(this.middleLabel2);
+            this.videoForm.Controls.Add(this.endMinText);
+            this.videoForm.Controls.Add(this.videoEndLabel);
+            this.videoForm.Controls.Add(this.startSecText);
+            this.videoForm.Controls.Add(this.middleLabel);
+            this.videoForm.Controls.Add(this.startMinText);
+            this.videoForm.Controls.Add(this.VideoStartLabel);
+            this.videoForm.Location = new System.Drawing.Point(372, 488);
+            this.videoForm.Name = "videoForm";
+            this.videoForm.Size = new System.Drawing.Size(470, 59);
+            this.videoForm.TabIndex = 6;
+            this.videoForm.TabStop = false;
+            this.videoForm.Text = "Video Control";
+            // 
+            // fpsText
+            // 
+            this.fpsText.Location = new System.Drawing.Point(419, 22);
+            this.fpsText.Name = "fpsText";
+            this.fpsText.Size = new System.Drawing.Size(31, 22);
+            this.fpsText.TabIndex = 9;
+            this.fpsText.Text = "0";
+            this.fpsText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
+            // 
+            // fpsLabel
+            // 
+            this.fpsLabel.AutoSize = true;
+            this.fpsLabel.Location = new System.Drawing.Point(387, 25);
+            this.fpsLabel.Name = "fpsLabel";
+            this.fpsLabel.Size = new System.Drawing.Size(26, 12);
+            this.fpsLabel.TabIndex = 8;
+            this.fpsLabel.Text = "FPS:";
+            // 
+            // endSecText
+            // 
+            this.endSecText.Location = new System.Drawing.Point(308, 22);
+            this.endSecText.Name = "endSecText";
+            this.endSecText.Size = new System.Drawing.Size(31, 22);
+            this.endSecText.TabIndex = 7;
+            this.endSecText.Text = "0";
+            this.endSecText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
+            // 
+            // middleLabel2
+            // 
+            this.middleLabel2.AutoSize = true;
+            this.middleLabel2.Location = new System.Drawing.Point(294, 25);
+            this.middleLabel2.Name = "middleLabel2";
+            this.middleLabel2.Size = new System.Drawing.Size(8, 12);
+            this.middleLabel2.TabIndex = 6;
+            this.middleLabel2.Text = ":";
+            // 
+            // endMinText
+            // 
+            this.endMinText.Location = new System.Drawing.Point(263, 22);
+            this.endMinText.Name = "endMinText";
+            this.endMinText.Size = new System.Drawing.Size(25, 22);
+            this.endMinText.TabIndex = 5;
+            this.endMinText.Text = "0";
+            this.endMinText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
+            // 
+            // videoEndLabel
+            // 
+            this.videoEndLabel.AutoSize = true;
+            this.videoEndLabel.Location = new System.Drawing.Point(201, 25);
+            this.videoEndLabel.Name = "videoEndLabel";
+            this.videoEndLabel.Size = new System.Drawing.Size(54, 12);
+            this.videoEndLabel.TabIndex = 4;
+            this.videoEndLabel.Text = "End Time:";
+            // 
+            // startSecText
+            // 
+            this.startSecText.Location = new System.Drawing.Point(129, 22);
+            this.startSecText.Name = "startSecText";
+            this.startSecText.Size = new System.Drawing.Size(31, 22);
+            this.startSecText.TabIndex = 3;
+            this.startSecText.Text = "0";
+            this.startSecText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
+            // 
+            // middleLabel
+            // 
+            this.middleLabel.AutoSize = true;
+            this.middleLabel.Location = new System.Drawing.Point(115, 25);
+            this.middleLabel.Name = "middleLabel";
+            this.middleLabel.Size = new System.Drawing.Size(8, 12);
+            this.middleLabel.TabIndex = 2;
+            this.middleLabel.Text = ":";
+            // 
+            // startMinText
+            // 
+            this.startMinText.Location = new System.Drawing.Point(84, 22);
+            this.startMinText.Name = "startMinText";
+            this.startMinText.Size = new System.Drawing.Size(25, 22);
+            this.startMinText.TabIndex = 1;
+            this.startMinText.Text = "0";
+            this.startMinText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumberTextbox_KeyPress);
+            // 
+            // VideoStartLabel
+            // 
+            this.VideoStartLabel.AutoSize = true;
+            this.VideoStartLabel.Location = new System.Drawing.Point(22, 25);
+            this.VideoStartLabel.Name = "VideoStartLabel";
+            this.VideoStartLabel.Size = new System.Drawing.Size(56, 12);
+            this.VideoStartLabel.TabIndex = 0;
+            this.VideoStartLabel.Text = "Start Time:";
+            // 
+            // videoLoadBtn
+            // 
+            this.videoLoadBtn.Location = new System.Drawing.Point(848, 150);
+            this.videoLoadBtn.Name = "videoLoadBtn";
+            this.videoLoadBtn.Size = new System.Drawing.Size(88, 40);
+            this.videoLoadBtn.TabIndex = 7;
+            this.videoLoadBtn.Text = "Load Video";
+            this.videoLoadBtn.UseVisualStyleBackColor = true;
+            this.videoLoadBtn.Click += new System.EventHandler(this.videoLoadBtn_Click);
+            // 
             // MainWindow
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 559);
+            this.Controls.Add(this.videoLoadBtn);
+            this.Controls.Add(this.videoForm);
             this.Controls.Add(this.txtSaveBtn);
             this.Controls.Add(this.imageSaveBtn);
             this.Controls.Add(this.dotForm);
@@ -228,6 +362,8 @@ namespace Util_Dot_Art_Maker
             this.dotForm.ResumeLayout(false);
             this.dotForm.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdBar)).EndInit();
+            this.videoForm.ResumeLayout(false);
+            this.videoForm.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,6 +387,18 @@ namespace Util_Dot_Art_Maker
         private System.Windows.Forms.Button imageSaveBtn;
         private System.Windows.Forms.Button txtSaveBtn;
         private System.Windows.Forms.Timer gifTimer;
+        private System.Windows.Forms.GroupBox videoForm;
+        private System.Windows.Forms.TextBox startMinText;
+        private System.Windows.Forms.Label VideoStartLabel;
+        private System.Windows.Forms.Button videoLoadBtn;
+        private System.Windows.Forms.TextBox fpsText;
+        private System.Windows.Forms.Label fpsLabel;
+        private System.Windows.Forms.TextBox endSecText;
+        private System.Windows.Forms.Label middleLabel2;
+        private System.Windows.Forms.TextBox endMinText;
+        private System.Windows.Forms.Label videoEndLabel;
+        private System.Windows.Forms.TextBox startSecText;
+        private System.Windows.Forms.Label middleLabel;
     }
 }
 

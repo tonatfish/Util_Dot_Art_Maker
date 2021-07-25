@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gif.Components;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
 
 
 // for someone refact the project: if possible, we can simply classify logic part to another cs
@@ -61,25 +63,23 @@ namespace Util_Dot_Art_Maker
                         imgType = i;
                     }
                 }
-                if (isPicture)
-                {
-                    gifTimer.Stop();
-                    performedTexts.Clear();
-                    performedImgs.Clear();
-                    pictureLoaded.Load(pictureLoadDialog.FileName);
-                    if (imgType == 2)
-                    {
-                        setGifOnScreen(pictureLoadDialog.FileName);
-                    }
-                    else
-                    {
-                        setImgOnScreen();
-                    }
-                }
-                else
+                if (!isPicture)
                 {
                     MessageBox.Show("需要圖片文件!");
                     return;
+                }
+
+                gifTimer.Stop();
+                performedTexts.Clear();
+                performedImgs.Clear();
+                pictureLoaded.Load(pictureLoadDialog.FileName);
+                if (imgType == 2)
+                {
+                    setGifOnScreen(pictureLoadDialog.FileName);
+                }
+                else
+                {
+                    setImgOnScreen();
                 }
             }
         }
@@ -109,25 +109,22 @@ namespace Util_Dot_Art_Maker
                     imgType = i;
                 }
             }
-            if (isPicture)
-            {
-                gifTimer.Stop();
-                performedTexts.Clear();
-                performedImgs.Clear();
-                pictureLoaded.Load(file);
-                if (imgType == 2)
-                {
-                    setGifOnScreen(file);
-                }
-                else
-                {
-                    setImgOnScreen();
-                }
-            }
-            else
+            if (!isPicture)
             {
                 MessageBox.Show("需要圖片文件!");
                 return;
+            }
+            gifTimer.Stop();
+            performedTexts.Clear();
+            performedImgs.Clear();
+            pictureLoaded.Load(file);
+            if (imgType == 2)
+            {
+                setGifOnScreen(file);
+            }
+            else
+            {
+                setImgOnScreen();
             }
         }
 
@@ -141,15 +138,7 @@ namespace Util_Dot_Art_Maker
 
         }
 
-        private void resizeWidthInput_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == 8))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void resizeHeightInput_KeyPress(object sender, KeyPressEventArgs e)
+        private void onlyNumberTextbox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == 8))
             {
@@ -214,7 +203,7 @@ namespace Util_Dot_Art_Maker
                     List<Image> tempImgs = new List<Image>();
                     for (int i = 0; i < performedCount; i++)
                     {
-                        Bitmap bitmap = new Bitmap(pictureLoaded.Width, pictureLoaded.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                        Bitmap bitmap = new Bitmap((int)(pictureLoaded.Image.Width * 3.05), (int)(pictureLoaded.Image.Height * 2.4), System.Drawing.Imaging.PixelFormat.Format32bppRgb);
                         Graphics graphics = Graphics.FromImage(bitmap);
                         graphics.Clear(Color.White);
                         graphics.DrawString(performedTexts[i], new Font("新細明體", 6, FontStyle.Regular), new SolidBrush(Color.FromArgb(0, 0, 0)), new PointF(0F, 0F));
@@ -264,11 +253,54 @@ namespace Util_Dot_Art_Maker
             transformedTextBox.Text = performedTexts[performedId];
         }
 
+        private void videoLoadBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog videoLoadDialog = new OpenFileDialog();
+            string imgFilterText = "any of videos|*.*|mp4 files|*.mp4";
+            videoLoadDialog.Filter = imgFilterText;
+            if (videoLoadDialog.ShowDialog() == DialogResult.OK)
+            {
+                imgType = 2; // treat videos as gif
+                
+                if (!videoLoadDialog.SafeFileName.ToLower().EndsWith("mp4"))
+                {
+                    MessageBox.Show("需要影片文件!");
+                    return;
+                }
+
+                gifTimer.Stop();
+                performedTexts.Clear();
+                performedImgs.Clear();
+                VideoCapture videoLoaded = new VideoCapture(videoLoadDialog.FileName);
+                double videoDuration = videoLoaded.FrameCount / videoLoaded.Fps;
+                int startTime = makeTime(startMinText.Text, startSecText.Text);
+                int endTime = makeTime(endMinText.Text, endSecText.Text);
+                if (endTime <= startTime || startTime < 0 || endTime < 0 || startTime >= videoDuration || endTime >= videoDuration || Convert.ToInt32(fpsText.Text) == 0)
+                {
+                    MessageBox.Show("請確定時間規範!");
+                    videoLoaded.Release();
+                    return;
+                }
+
+                setVideoOnScreen(videoLoaded);
+                videoLoaded.Release();
+            }
+        }
+
 
 
         // Logic
 
-        private void setImgOnScreen()
+        private int makeTime(string min, string sec)
+        {
+            if (Convert.ToInt32(sec) > 60 || Convert.ToInt32(sec) < 0 || Convert.ToInt32(min) < 0)
+            {
+                return -1;
+            }
+            return Convert.ToInt32(min) * 60 + Convert.ToInt32(sec);
+        }
+
+        private void setImgOnScreen() // take imgs as 1 in list
         {
             performedCount = 1;
             imgProcessToDot(pictureLoaded.Image);
@@ -276,7 +308,7 @@ namespace Util_Dot_Art_Maker
             transformedTextBox.Text = performedTexts[0];
         }
 
-        private void setGifOnScreen(string imgPath)
+        private void setGifOnScreen(string imgPath) // take gif as many imgs in list
         {
             performedId = 0;
 
@@ -291,7 +323,30 @@ namespace Util_Dot_Art_Maker
             gifTimer.Start();
         }
 
-        private void imgProcessToDot(Image pictureToProcess)
+        private void setVideoOnScreen(VideoCapture videoToProcess)
+        {
+            int startTime = makeTime(startMinText.Text, startSecText.Text);
+            int endTime = makeTime(endMinText.Text, endSecText.Text);
+            int inputFps = Convert.ToInt32(fpsText.Text);
+            int frameCount = Convert.ToInt32((endTime - startTime) * videoToProcess.Fps);
+            int startFrame = Convert.ToInt32(startTime * videoToProcess.Fps);
+
+            gifTimer.Interval = inputFps;
+            for (int i = 0; i < frameCount; i += Convert.ToInt32(videoToProcess.Fps / inputFps))
+            {
+                videoToProcess.Set(1, startFrame + i); // set video frame
+                Mat imageMat = new Mat();
+                videoToProcess.Read(imageMat);
+                imgProcessToDot(imageMat.ToBitmap());
+                imageMat.Release();
+            }
+            videoToProcess.Release();
+            performedCount = performedImgs.Count;
+            gifTimer.Interval = Convert.ToInt32(1000.0 / inputFps);
+            gifTimer.Start();
+        }
+
+        private void imgProcessToDot(Image pictureToProcess) // util process (make imgs & texts)
         {
             int pictureWidth = pictureToProcess.Width;
             int pictureHeight = pictureToProcess.Height;
@@ -314,7 +369,7 @@ namespace Util_Dot_Art_Maker
                 }
             }
 
-            Bitmap pictureChange = new Bitmap(pictureToProcess, new Size(pictureWidth, pictureHeight));
+            Bitmap pictureChange = new Bitmap(pictureToProcess, new System.Drawing.Size(pictureWidth, pictureHeight));
             double[,] processData = new double[pictureWidth, pictureHeight];
 
             threshold = thresholdBar.Value / 255.0;
@@ -345,7 +400,7 @@ namespace Util_Dot_Art_Maker
             setDotArt(processData);
         }
 
-        private void setPictureLoaded(double[,] pixelData)
+        private void setPictureLoaded(double[,] pixelData) // set processed img into list
         {
             Bitmap resizedPicture = new Bitmap(pixelData.GetLength(0), pixelData.GetLength(1));
             for (int i = 0; i < pixelData.GetLength(0); i++)
